@@ -1,0 +1,20 @@
+{
+  "compilerOptions": {
+    "target": "ES2022",
+    // @embedpdf/* ship extensionless relative re-exports in their .d.ts files, which
+    // NodeNext resolution rejects. Bundler resolution reads them fine; tsc never
+    // rewrites specifiers, and every relative import here already carries an explicit
+    // .js extension, so the emitted output is still valid Node ESM.
+    "module": "ESNext",
+    "moduleResolution": "Bundler",
+    "lib": ["ES2023"],
+    "types": ["node"],
+    "strict": true,
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "sourceMap": true,
+    "outDir": "dist",
+    "rootDir": "."
+  },
+  "include": ["server/**/*.ts", "shared/**/*.ts"]
+}
