@@ -1,5 +1,8 @@
 # SuperDoc: floating text box with an inline SDT
 
+**Live demo:** https://claude.ai/artifact/AoetPs8ivCmzMrwivsaMUQ  
+**Source:** https://github.com/superdoc/public-bonus-examples/tree/main/floating-textbox-sdt-app
+
 A small Vite + vanilla JS example built on `superdoc` 2.x. It lets you:
 
 - **Add a floating text box** (side panel, top-right button) to the page currently in view. The box is *In Front of Text*
@@ -51,10 +54,10 @@ by `doc.blocks.list()`, which is how the patch finds the anchor paragraph.
 
 ## Hosted demo (claude.ai Artifact)
 
-The demo is published as a private claude.ai Artifact. To rebuild and republish after a change:
+The demo is published as a claude.ai Artifact at https://claude.ai/artifact/AoetPs8ivCmzMrwivsaMUQ (the header's **GitHub** button links back to this folder). To rebuild and republish after a change:
 
 ```bash
-npx vite build --config vite.artifact.config.js && python3 scripts/make-artifact-page.py
+npm run build:artifact
 ```
 
 `make-artifact-page.py` turns `dist-artifact/index.html` into `dist-artifact/artifact.html` (a page
