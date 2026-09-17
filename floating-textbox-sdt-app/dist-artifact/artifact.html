@@ -1,0 +1,76 @@
+<title>🦋️ SuperDoc Example - Floating SDT (via floating textbox container)</title>
+<style>
+/* Theme tokens: light on bare :root, dark under the system preference (unless the host pins light) and under an explicit dark stamp. */
+:root {
+  --panel-w: 340px;
+  --bg: #f4f6f9; --surface: #ffffff; --border: #d8dee8; --text: #1e293b; --muted: #64748b;
+  --accent: #4f46e5; --accent-text: #ffffff; --danger: #b91c1c; --danger-border: #ef4444;
+  --field-bg: #ffffff; --editor-bg: #e2e8f0; --code-bg: #eef2f7; --focus: #6366f1;
+  font-family: system-ui, -apple-system, "Segoe UI", sans-serif; color: var(--text);
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #14171e; --surface: #1b1f28; --border: #2d3441; --text: #e6eaf1; --muted: #9aa4b5;
+    --accent: #8b93f8; --accent-text: #0b0d13; --danger: #fda4a4; --danger-border: #b91c1c;
+    --field-bg: #11141a; --editor-bg: #0e1117; --code-bg: #252b37; --focus: #a5b4fc;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #14171e; --surface: #1b1f28; --border: #2d3441; --text: #e6eaf1; --muted: #9aa4b5;
+  --accent: #8b93f8; --accent-text: #0b0d13; --danger: #fda4a4; --danger-border: #b91c1c;
+  --field-bg: #11141a; --editor-bg: #0e1117; --code-bg: #252b37; --focus: #a5b4fc;
+}
+html, body { margin: 0; height: 100%; }
+body { background: var(--bg); color: var(--text); }
+</style>
+<link rel="stylesheet" crossorigin href="./assets/index-CoHIriwA.css">
+<div id="app">
+      <header id="topbar">
+        <strong>🦋️ SuperDoc Example - Floating SDT (via floating textbox container)</strong>
+        <label class="file-btn">Open .docx<input id="open-file" type="file" accept=".docx" hidden /></label>
+        <button id="download" disabled>Download .docx</button>
+        <span id="status">loading…</span>
+      </header>
+      <main id="workspace">
+        <div id="editor"></div>
+        <aside id="panel">
+          <div class="panel-head">
+            <h2>Text box &amp; SDT</h2>
+            <button id="add-textbox" disabled title="Insert a wrapNone, transparent floating text box with an inline SDT on the page currently in view">Add floating SDT</button>
+          </div>
+          <p id="panel-empty">No text box in this document yet. Scroll to a page and click “Add floating SDT”.</p>
+          <form id="panel-form" hidden autocomplete="off">
+            <label>Text box<select id="box-select"></select></label>
+            <div id="box-info" class="muted"></div>
+            <label>SDT value<textarea id="sdt-value" rows="3"></textarea></label>
+            <fieldset>
+              <legend>Position (pt from page top-left)</legend>
+              <label>X<input id="tb-x" type="number" step="1" /></label>
+              <label>Y<input id="tb-y" type="number" step="1" /></label>
+            </fieldset>
+            <fieldset>
+              <legend>Size (pt)</legend>
+              <label>Width<input id="tb-w" type="number" step="1" min="10" /></label>
+              <label>Height<input id="tb-h" type="number" step="1" min="10" /></label>
+            </fieldset>
+            <div id="sdt-size" class="muted"></div>
+            <div class="row">
+              <button type="button" id="make-transparent" hidden>Make wrapNone + transparent</button>
+              <button type="button" id="refresh">Refresh from document</button>
+              <button type="button" id="remove-textbox" class="danger">Remove text box</button>
+            </div>
+          </form>
+          <details class="help">
+            <summary>How it works</summary>
+            <ul>
+              <li>The button finds the page under the middle of the editor viewport, then the first body paragraph painted on that page, and anchors the text box to it.</li>
+              <li>The text box is written into the DOCX (export → patch document.xml → replaceFile): <code>wp:wrapNone</code>, page-relative position, <code>a:noFill</code>, zero insets, one paragraph with an inline plain-text <code>w:sdt</code>.</li>
+              <li>The SDT value is changed live through <code>activeEditor.doc.contentControls.text.setValue</code>.</li>
+              <li>Position and size changes rewrite the anchor geometry and reload the document. The SDT is the only content of the box with zero insets, and the app adds CSS so its rendered chrome fills the whole text box.</li>
+            </ul>
+          </details>
+        </aside>
+      </main>
+    </div>
+<script>window.__SAMPLE_DOCX_B64 = "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";</script>
+<script type="module" crossorigin src="./assets/index-CLxFo7Zu.js"></script>

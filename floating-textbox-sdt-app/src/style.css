@@ -1,0 +1,55 @@
+/* Theme tokens: light on bare :root, dark under the system preference (unless the host pins light) and under an explicit dark stamp. */
+:root {
+  --panel-w: 340px;
+  --bg: #f4f6f9; --surface: #ffffff; --border: #d8dee8; --text: #1e293b; --muted: #64748b;
+  --accent: #4f46e5; --accent-text: #ffffff; --danger: #b91c1c; --danger-border: #ef4444;
+  --field-bg: #ffffff; --editor-bg: #e2e8f0; --code-bg: #eef2f7; --focus: #6366f1;
+  font-family: system-ui, -apple-system, "Segoe UI", sans-serif; color: var(--text);
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #14171e; --surface: #1b1f28; --border: #2d3441; --text: #e6eaf1; --muted: #9aa4b5;
+    --accent: #8b93f8; --accent-text: #0b0d13; --danger: #fda4a4; --danger-border: #b91c1c;
+    --field-bg: #11141a; --editor-bg: #0e1117; --code-bg: #252b37; --focus: #a5b4fc;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #14171e; --surface: #1b1f28; --border: #2d3441; --text: #e6eaf1; --muted: #9aa4b5;
+  --accent: #8b93f8; --accent-text: #0b0d13; --danger: #fda4a4; --danger-border: #b91c1c;
+  --field-bg: #11141a; --editor-bg: #0e1117; --code-bg: #252b37; --focus: #a5b4fc;
+}
+
+html, body { margin: 0; height: 100%; }
+body { background: var(--bg); color: var(--text); }
+#app { display: flex; flex-direction: column; height: 100%; }
+#topbar { display: flex; align-items: center; flex-wrap: wrap; gap: 10px; padding-block: 8px; padding-inline: 16px; border-bottom: 1px solid var(--border); background: var(--surface); }
+#topbar button, .file-btn { padding: 6px 12px; border: 1px solid var(--border); border-radius: 6px; background: var(--surface); color: var(--text); font: inherit; cursor: pointer; }
+#topbar button:disabled { opacity: 0.5; cursor: default; }
+#status { color: var(--muted); font-size: 13px; margin-left: auto; }
+#workspace { display: flex; flex: 1; min-height: 0; }
+#editor { flex: 1; min-width: 0; height: 100%; overflow: auto; position: relative; background: var(--editor-bg); }
+#panel { width: var(--panel-w); flex: 0 0 var(--panel-w); border-left: 1px solid var(--border); padding-block: 12px; padding-inline: 16px; overflow: auto; background: var(--surface); font-size: 14px; box-sizing: border-box; }
+.panel-head { display: flex; align-items: center; justify-content: space-between; gap: 8px; margin-bottom: 8px; }
+#panel h2 { font-size: 15px; margin: 0; text-wrap: balance; }
+#add-textbox { padding: 6px 12px; border: 1px solid var(--accent); border-radius: 6px; background: var(--accent); color: var(--accent-text); font: inherit; font-weight: 600; cursor: pointer; white-space: nowrap; }
+#add-textbox:disabled { opacity: 0.5; cursor: default; }
+#panel label { display: block; margin: 8px 0; font-weight: 600; font-size: 12px; text-transform: uppercase; letter-spacing: 0.04em; color: var(--muted); }
+#panel input, #panel textarea, #panel select { display: block; width: 100%; box-sizing: border-box; margin-top: 4px; font: inherit; font-size: 14px; text-transform: none; letter-spacing: 0; color: var(--text); background: var(--field-bg); padding: 6px 8px; border: 1px solid var(--border); border-radius: 6px; font-variant-numeric: tabular-nums; }
+#panel fieldset { border: 1px solid var(--border); border-radius: 6px; margin: 10px 0; padding: 6px 10px 10px; display: flex; gap: 10px; }
+#panel fieldset legend { font-size: 12px; color: var(--muted); padding: 0 4px; }
+#panel fieldset label { flex: 1; margin: 0; }
+.muted { color: var(--muted); font-size: 12px; margin: 6px 0; line-height: 1.5; }
+.row { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 12px; }
+.row button { padding: 6px 10px; border: 1px solid var(--border); border-radius: 6px; background: var(--surface); color: var(--text); font: inherit; cursor: pointer; }
+.row button.danger { border-color: var(--danger-border); color: var(--danger); }
+.help { margin-top: 16px; font-size: 12px; color: var(--muted); }
+.help code { font-size: 11px; background: var(--code-bg); padding: 1px 4px; border-radius: 3px; }
+.help ul { padding-left: 18px; }
+button:focus-visible, input:focus-visible, textarea:focus-visible, select:focus-visible { outline: 2px solid var(--focus); outline-offset: 1px; }
+body.busy #panel { opacity: 0.6; pointer-events: none; }
+@media (max-width: 720px) {
+  #workspace { flex-direction: column; }
+  #editor { height: 55%; flex: none; }
+  #panel { width: auto; flex: 1; border-left: 0; border-top: 1px solid var(--border); }
+}
+@media (prefers-reduced-motion: reduce) { * { transition: none !important; } }

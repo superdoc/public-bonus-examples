@@ -1,0 +1,20 @@
+{
+  "name": "textbox-sdt-app",
+  "private": true,
+  "version": "0.1.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview",
+    "build:artifact": "vite build --config vite.artifact.config.js && python3 scripts/make-artifact-page.py",
+    "preview:artifact": "vite preview --config vite.artifact.config.js"
+  },
+  "dependencies": {
+    "fflate": "^0.8.3",
+    "superdoc": "^2.15.1"
+  },
+  "devDependencies": {
+    "vite": "^8.3.0"
+  }
+}

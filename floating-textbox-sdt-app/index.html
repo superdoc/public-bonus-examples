@@ -1,0 +1,60 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>🦋️ SuperDoc Example - Floating SDT (via floating textbox container)</title>
+    <link rel="stylesheet" href="/src/style.css" />
+  </head>
+  <body>
+    <div id="app">
+      <header id="topbar">
+        <strong>🦋️ SuperDoc Example - Floating SDT (via floating textbox container)</strong>
+        <label class="file-btn">Open .docx<input id="open-file" type="file" accept=".docx" hidden /></label>
+        <button id="download" disabled>Download .docx</button>
+        <span id="status">loading…</span>
+      </header>
+      <main id="workspace">
+        <div id="editor"></div>
+        <aside id="panel">
+          <div class="panel-head">
+            <h2>Text box &amp; SDT</h2>
+            <button id="add-textbox" disabled title="Insert a wrapNone, transparent floating text box with an inline SDT on the page currently in view">Add floating SDT</button>
+          </div>
+          <p id="panel-empty">No text box in this document yet. Scroll to a page and click “Add floating SDT”.</p>
+          <form id="panel-form" hidden autocomplete="off">
+            <label>Text box<select id="box-select"></select></label>
+            <div id="box-info" class="muted"></div>
+            <label>SDT value<textarea id="sdt-value" rows="3"></textarea></label>
+            <fieldset>
+              <legend>Position (pt from page top-left)</legend>
+              <label>X<input id="tb-x" type="number" step="1" /></label>
+              <label>Y<input id="tb-y" type="number" step="1" /></label>
+            </fieldset>
+            <fieldset>
+              <legend>Size (pt)</legend>
+              <label>Width<input id="tb-w" type="number" step="1" min="10" /></label>
+              <label>Height<input id="tb-h" type="number" step="1" min="10" /></label>
+            </fieldset>
+            <div id="sdt-size" class="muted"></div>
+            <div class="row">
+              <button type="button" id="make-transparent" hidden>Make wrapNone + transparent</button>
+              <button type="button" id="refresh">Refresh from document</button>
+              <button type="button" id="remove-textbox" class="danger">Remove text box</button>
+            </div>
+          </form>
+          <details class="help">
+            <summary>How it works</summary>
+            <ul>
+              <li>The button finds the page under the middle of the editor viewport, then the first body paragraph painted on that page, and anchors the text box to it.</li>
+              <li>The text box is written into the DOCX (export → patch document.xml → replaceFile): <code>wp:wrapNone</code>, page-relative position, <code>a:noFill</code>, zero insets, one paragraph with an inline plain-text <code>w:sdt</code>.</li>
+              <li>The SDT value is changed live through <code>activeEditor.doc.contentControls.text.setValue</code>.</li>
+              <li>Position and size changes rewrite the anchor geometry and reload the document. The SDT is the only content of the box with zero insets, and the app adds CSS so its rendered chrome fills the whole text box.</li>
+            </ul>
+          </details>
+        </aside>
+      </main>
+    </div>
+    <script type="module" src="/src/main.js"></script>
+  </body>
+</html>
